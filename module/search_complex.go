@@ -1,0 +1,12 @@
+package module
+
+import "moekoe-go/util"
+
+func init() { Register("/search/complex", SearchComplex) }
+func SearchComplex(params map[string]interface{}, cookies map[string]string, requestFn func(util.RequestConfig) (*util.Response, error)) (*util.Response, error) {
+	return requestFn(util.RequestConfig{
+		BaseURL: "https://complexsearch.kugou.com", URL: "/v6/search/complex", Method: "GET",
+		Params: map[string]interface{}{"platform": "AndroidFilter", "keyword": params["keywords"], "page": toIntDefault(params, "page", 1), "pagesize": toIntDefault(params, "pagesize", 30), "cursor": 0},
+		EncryptType: "android", Cookie: cookies,
+	})
+}
